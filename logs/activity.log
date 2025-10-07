@@ -1,0 +1,15 @@
+<?php
+// activity_log.php
+
+// Log an activity
+function log_activity($user_id, $action) {
+    $log_file = __DIR__ . '/activity.log'; // Log file path
+    $timestamp = date("Y-m-d H:i:s");       // Current timestamp
+
+    // Create log entry: [timestamp] UserID: action
+    $entry = "[$timestamp] UserID: $user_id - $action" . PHP_EOL;
+
+    // Append to the log file
+    file_put_contents($log_file, $entry, FILE_APPEND | LOCK_EX);
+}
+?>

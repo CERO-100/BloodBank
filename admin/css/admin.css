@@ -1,0 +1,37 @@
+/* admin/css/admin.css */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f8fa;
+}
+.navbar-brand {
+    font-weight: 700;
+}
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.card .card-header {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.table th, .table td {
+    vertical-align: middle;
+}
+.btn-custom {
+    background-color: #C41E3A;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    transition: 0.3s;
+}
+.btn-custom:hover {
+    background-color: #900020;
+}
+.badge-approved { background: #28a745; }
+.badge-pending { background: #ffc107; }
+.badge-rejected { background: #dc3545; }

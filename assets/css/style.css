@@ -1,0 +1,142 @@
+/* Global CSS */
+/* ===========================
+   Global Styles
+=========================== */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ===========================
+   Background Overlay
+=========================== */
+.overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ===========================
+   Landing Page Content
+=========================== */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.content p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* ===========================
+   Buttons
+=========================== */
+.btn-lg {
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* User/Login Buttons Color */
+.btn-danger { background-color: #C41E3A; border-color: #C41E3A; }
+.btn-primary { background-color: #1E90FF; border-color: #1E90FF; }
+.btn-success { background-color: #28a745; border-color: #28a745; }
+
+/* Outline buttons */
+.btn-outline-light {
+    color: #fff;
+    border: 2px solid #fff;
+}
+.btn-outline-light:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/* ===========================
+   Footer Styles
+=========================== */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* ===========================
+   Forms (Optional global)
+=========================== */
+input, select, textarea, button {
+    outline: none !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 5px rgba(196,30,58,0.4);
+    border-color: #C41E3A;
+}
+
+/* ===========================
+   Responsive Adjustments
+=========================== */
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 2.2rem;
+    }
+
+    .content p {
+        font-size: 1rem;
+    }
+
+    .btn-lg {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+:root {
+  --brand-red: #C41E3A;
+  --brand-blue: #2C5F8B;
+  --light-bg: #f9f9f9;
+  --dark-text: #333;
+  --radius-lg: 12px;
+  --shadow-soft: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* ===============================
+   Base Styles
+================================== */
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: var(--dark-text);
+  background: var(--light-bg);
+  line-height: 1.6;
+}

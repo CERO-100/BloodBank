@@ -1,0 +1,10 @@
+
+body { background-color: #f8f9fa; font-family: 'Poppins', sans-serif; }
+.card { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: 0.3s; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+.btn-custom { background-color: #C41E3A; color: #fff; border-radius: 6px; transition: 0.3s; }
+.btn-custom:hover { background-color: #900020; }
+.badge-pending { background-color: #ffc107; color: #fff; }
+.badge-approved { background-color: #28a745; color: #fff; }
+.badge-rejected { background-color: #dc3545; color: #fff; }
+.table th, .table td { vertical-align: middle !important; }

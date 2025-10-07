@@ -1,0 +1,3 @@
+?php
+// Shared header if needed
+// ...implementation goes here...
