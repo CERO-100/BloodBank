@@ -3,37 +3,54 @@ session_start();
 include "includes/db.php";
 
 
-if(isset($_POST['login'])){
-    $email = $_POST['email'];
+if (isset($_POST['login'])) {
+    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
-    $stmt->bind_param("s",$email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if($user && password_verify($password, $user['password'])){
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['role'] = $user['role'];
-
-        // Redirect based on role
-        if($user['role'] == 'admin'){
-            header("Location: admin/dashboard.php");
-        } elseif($user['role'] == 'hospital'){
-            header("Location: hospital/dashboard.php");
-        } else {
-            header("Location: user/dashboard.php");
-        }
-        exit();
+    if (!$email) {
+        $error = "Please enter a valid email address!";
     } else {
-        $error = "Invalid credentials!";
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user && password_verify($password, $user['password'])) {
+            // Check if user is approved
+            if ($user['status'] !== 'approved') {
+                $error = "Your account is {$user['status']}. Please wait for admin approval.";
+            } else {
+                // Regenerate session ID for security
+                session_regenerate_id(true);
+
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+                $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+                $_SESSION['last_activity'] = time();
+
+                // Redirect based on role
+                if ($user['role'] == 'admin') {
+                    header("Location: admin/admin.php"); // FIXED: admin.php not dashboard.php
+                } elseif ($user['role'] == 'hospital') {
+                    header("Location: hospital/dashboard.php");
+                } else {
+                    header("Location: user/dashboard.php");
+                }
+                exit();
+            }
+        } else {
+            $error = "Invalid email or password!";
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Login | Blood Bank</title>
@@ -53,7 +70,7 @@ if(isset($_POST['login'])){
             background: #fff;
             padding: 40px 35px;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
             text-align: center;
@@ -78,7 +95,7 @@ if(isset($_POST['login'])){
 
         .login-card input:focus {
             border-color: #C41E3A;
-            box-shadow: 0 0 8px rgba(196,30,58,0.3);
+            box-shadow: 0 0 8px rgba(196, 30, 58, 0.3);
         }
 
         .login-card button {
@@ -96,10 +113,11 @@ if(isset($_POST['login'])){
 
         .login-card button:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196,30,58,0.4);
+            box-shadow: 0 8px 20px rgba(196, 30, 58, 0.4);
         }
 
-        .login-card .register-link {
+        .login-card .register-link,
+        .login-card .forgot-link {
             display: block;
             margin-top: 15px;
             font-size: 0.9rem;
@@ -107,8 +125,14 @@ if(isset($_POST['login'])){
             text-decoration: none;
         }
 
-        .login-card .register-link:hover {
+        .login-card .register-link:hover,
+        .login-card .forgot-link:hover {
             text-decoration: underline;
+        }
+
+        .login-card .forgot-link {
+            margin-top: 12px;
+            font-size: 0.85rem;
         }
 
         .error-msg {
@@ -116,14 +140,31 @@ if(isset($_POST['login'])){
             margin-bottom: 15px;
             font-weight: 600;
         }
+
+        .success-msg {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-weight: 600;
+            background: #d4edda;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #c3e6cb;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="login-card">
         <h2>Login</h2>
 
-        <?php if(isset($error)) { ?>
+        <?php if (isset($_GET['reset']) && $_GET['reset'] == 'success'): ?>
+            <div class="success-msg">
+                <i class="fas fa-check-circle"></i> Password reset successful! Please login with your new password.
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($error)) { ?>
             <div class="error-msg"><?= $error; ?></div>
         <?php } ?>
 
@@ -133,9 +174,11 @@ if(isset($_POST['login'])){
             <button type="submit" name="login">Login</button>
         </form>
 
+        <a href="forgot_password.php" class="forgot-link">Forgot Password?</a>
         <a href="register.php" class="register-link">Don't have an account? Register</a>
     </div>
 
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

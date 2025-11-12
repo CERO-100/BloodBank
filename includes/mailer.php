@@ -1,11 +1,12 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Include PHPMailer files
-require_once __DIR__ . '/PHPMailer/src/Exception.php';
-require_once __DIR__ . '/PHPMailer/src/PHPMailer.php';
-require_once __DIR__ . '/PHPMailer/src/SMTP.php';
+require_once __DIR__ . '/../phpmailer/Exception.php';
+require_once __DIR__ . '/../phpmailer/PHPMailer.php';
+require_once __DIR__ . '/../phpmailer/SMTP.php';
 
 /**
  * Send Email
@@ -14,7 +15,8 @@ require_once __DIR__ . '/PHPMailer/src/SMTP.php';
  * @param string $body    Email body (HTML allowed)
  * @return bool           True if sent, false otherwise
  */
-function send_mail($to, $subject, $body) {
+function send_mail($to, $subject, $body)
+{
     $mail = new PHPMailer(true);
 
     try {
@@ -22,8 +24,8 @@ function send_mail($to, $subject, $body) {
         $mail->isSMTP();                                        // Use SMTP
         $mail->Host       = 'smtp.gmail.com';                  // SMTP server
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'your_email@gmail.com';           // SMTP username
-        $mail->Password   = 'your_app_password';              // SMTP password (app password recommended)
+        $mail->Username   = 'bloodbankpypa@gmail.com';           // SMTP username
+        $mail->Password   = '@@@bloodbank@@@123';              // SMTP password (app password recommended)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
@@ -32,7 +34,7 @@ function send_mail($to, $subject, $body) {
         $mail->addAddress($to);
 
         // Content
-        $mail->isHTML(true);                                  
+        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $body;
 
@@ -43,4 +45,3 @@ function send_mail($to, $subject, $body) {
         return false;
     }
 }
-?>
